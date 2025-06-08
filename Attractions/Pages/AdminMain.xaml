@@ -80,10 +80,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Навигация -->
+        <!-- Навигационная панель -->
         <Border Grid.Row="0" Background="#697E50" Padding="10" CornerRadius="10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="🎡 Развлечения" Click="BtnAttractions_Click" IsEnabled="False" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+                <Button Content="📅 Сеансы" Click="BtnSessions_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
                 <Button Content="🗃️ Заказы" Click="BtnOrders_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
                 <Button Content="👥 Пользователи" Click="BtnUsers_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
                 <Button Content="Выйти" Click="BtnLogout_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
@@ -103,8 +104,8 @@
                 <Button Content="✏️Редактировать" Click="BtnEdit_Click" 
                         IsEnabled="{Binding ElementName=lvEntertainment, Path=SelectedItems.Count}" Background="#FFA4B17B" Foreground="#FF20331B"/>
                 <Button Content="🗑 Удалить" Click="BtnDelete_Click" 
-                        IsEnabled="{Binding ElementName=lvEntertainment, Path=SelectedItems.Count}" Background="#FFA4B17B" Foreground="#FF20331B"/>
-                <Button Content="О" Click="BtnRefresh_Click" Style="{StaticResource RoundButtonStyle}" ToolTip="Обновить"/>
+                        IsEnabled="{Binding ElementName=lvEntertainment, Path=SelectedItems.Count}" Background="#FFA5205C" Foreground="White"/>
+                <Button Content="↩" Click="BtnRefresh_Click" Style="{StaticResource RoundButtonStyle}" ToolTip="Обновить" FontSize="30" Foreground="#FF20331B"/>
             </StackPanel>
 
             <!-- Список -->
@@ -128,7 +129,7 @@
                         <GridViewColumn Header="Цена" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Price, StringFormat={}{0:C}}" />
+                                    <TextBlock Text="{Binding Price, StringFormat={}{0:N} ₽}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

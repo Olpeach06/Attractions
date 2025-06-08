@@ -108,6 +108,12 @@
     <Compile Include="Pages\AdminOrders.xaml.cs">
       <DependentUpon>AdminOrders.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AdminSchedule.xaml.cs">
+      <DependentUpon>AdminSchedule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AdminScheduleAddEdit.xaml.cs">
+      <DependentUpon>AdminScheduleAddEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AdminUsers.xaml.cs">
       <DependentUpon>AdminUsers.xaml</DependentUpon>
     </Compile>
@@ -177,6 +183,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AdminOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AdminSchedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AdminScheduleAddEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

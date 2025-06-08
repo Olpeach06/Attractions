@@ -1,0 +1,103 @@
+﻿<Page x:Class="Attractions.Pages.AdminScheduleAddEdit"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Title="Добавление/редактирование сеанса"
+      Background="#20331B">
+
+    <Page.Resources>
+        <!-- Общие ресурсы стиля -->
+        <Color x:Key="PrimaryColor">#A4B17B</Color>
+        <Color x:Key="AccentColor">#697E50</Color>
+        <Color x:Key="DarkColor">#20331B</Color>
+        <SolidColorBrush x:Key="LightTextColor">#DDDDDD</SolidColorBrush>
+
+        <!-- Стили кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                BorderBrush="Transparent" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль текстовых блоков -->
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="0 5 0 0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Стиль для ComboBox -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+        </Style>
+
+        <!-- Стиль для DatePicker и TimePicker -->
+        <Style TargetType="DatePicker">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10">
+        <Border Background="#697E50" CornerRadius="10" Padding="15">
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" 
+                           FontSize="18" FontWeight="Bold" 
+                           Foreground="{StaticResource LightTextColor}" 
+                           Margin="0,0,0,15"/>
+
+                <!-- Развлечение -->
+                <TextBlock Text="Развлечение" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="cbEntertainment" 
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="EntertainmentId"/>
+
+                <!-- Дата начала -->
+                <TextBlock Text="Дата начала" Style="{StaticResource LabelStyle}" Margin="0,10,0,0"/>
+                <DatePicker x:Name="dpStartDate"/>
+
+                <!-- Время начала -->
+                <TextBlock Text="Время начала" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="tbStartTime" Text="12:00"/>
+
+                <!-- Длительность (мин) -->
+                <TextBlock Text="Длительность (минут)" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="tbDuration"/>
+
+                <!-- Максимальное количество участников -->
+                <TextBlock
+Text="Макс. участников" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="tbMaxParticipants"/>
+
+                <!-- Кнопки -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                    <Button Content="Сохранить" Click="BtnSave_Click" Width="120" Background="#FF5CB85C" Foreground="White"/>
+                    <Button Content="Отмена" Click="BtnCancel_Click" Width="120" Background="#FFA5205C" Foreground="White"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

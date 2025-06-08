@@ -126,5 +126,10 @@ namespace Attractions.Pages
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void BtnSessions_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new AdminSchedule());
+        }
     }
 }
