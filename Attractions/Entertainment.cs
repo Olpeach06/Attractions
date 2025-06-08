@@ -11,7 +11,7 @@ namespace Attractions
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Entertainment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +21,7 @@ namespace Attractions
             this.Reviews = new HashSet<Reviews>();
             this.Schedule = new HashSet<Schedule>();
         }
-
+    
         public int EntertainmentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -32,7 +32,7 @@ namespace Attractions
         public int MinAge { get; set; }
         public Nullable<int> MaxParticipants { get; set; }
         public string ImageUrl { get; set; }
-
+    
         public virtual Categories Categories { get; set; }
         public virtual Filters Filters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -38,5 +38,6 @@ namespace Attractions
         public string Status => IsBooked ? "Забронирован" : "Доступен";
 
         public string StatusColor => IsBooked ? "#FFFF0000" : "#FF00FF00";
+
     }
 }

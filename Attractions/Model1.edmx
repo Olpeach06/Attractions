@@ -151,6 +151,7 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
         <Association Name="FK__Cart__UserId__38996AB5">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -607,6 +608,7 @@
           <NavigationProperty Name="Payments" Relationship="Self.FK__Payments__UserId__48CFD27E" FromRole="Users" ToRole="Payments" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK__Reviews__UserId__534D60F1" FromRole="Users" ToRole="Reviews" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__RoleId__276EDEB3" FromRole="Users" ToRole="Roles" />
+          <Property Name="Balance" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <Association Name="FK__Cart__UserId__38996AB5">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -1038,6 +1040,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="EntertainmentDBModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
