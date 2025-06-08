@@ -1,0 +1,277 @@
+﻿<Page x:Class="Attractions.Pages.EditEntertainment"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Attractions.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EditEntertainment"
+      Background="#FF20331B">
+
+    <Page.Resources>
+        <!-- Стиль для TextBox со скругленными углами -->
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#FF2D2D2F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF697E50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для ComboBox со скругленными углами -->
+        <Style x:Key="RoundedComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="#FF2D2D2F"/>
+            <Setter Property="Foreground" Value="#FF697E50"/>
+            <Setter Property="BorderBrush" Value="#FF697E50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                        Grid.Column="2"
+                                        Focusable="false"
+                                        IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate>
+                                        <Border x:Name="templateRoot"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="0,4,4,0">
+                                            <Border x:Name="splitBorder"
+                                                    Width="1"
+                                                    Margin="0"
+                                                    HorizontalAlignment="Right"
+                                                    Background="{TemplateBinding BorderBrush}">
+                                                <Path x:Name="arrow"
+                                                      Margin="5"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      Data="M0,0 L4,4 8,0 Z"
+                                                      Fill="{TemplateBinding Foreground}"/>
+                                            </Border>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Margin="{TemplateBinding Padding}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Background="Transparent"
+                                     Foreground="{TemplateBinding Foreground}"
+                                     Visibility="Hidden"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Border x:Name="PopupBorder"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                    <ScrollViewer>
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="true">
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#FFA4B17B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для кнопок со скругленными углами -->
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Background" Value="#FF697E50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопки "Сохранить" -->
+        <Style x:Key="SaveButtonStyle" TargetType="Button" BasedOn="{StaticResource RoundedButton}">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="#FF20331B"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок -->
+            <Border Grid.Row="0" Background="#FF697E50" CornerRadius="8" Padding="10" Margin="0,0,0,20">
+                <TextBlock Text="{Binding Title}" FontSize="20" FontWeight="Bold" 
+                           Foreground="White" HorizontalAlignment="Center"/>
+            </Border>
+
+            <!-- Название -->
+            <Border Grid.Row="1" Background="#FF39393B" CornerRadius="8" Padding="10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Название:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbName" Width="300" Text="{Binding CurrentEntertainment.Name}" 
+                             Style="{StaticResource RoundedTextBox}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Категория -->
+            <Border Grid.Row="2" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Категория:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cbCategory" Width="300" 
+                              Style="{StaticResource RoundedComboBox}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="CategoryId"
+                              SelectedValue="{Binding CurrentEntertainment.CategoryId}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Фильтр -->
+            <Border Grid.Row="3" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Фильтр:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="cbFilter" Width="300" 
+                              Style="{StaticResource RoundedComboBox}"
+                              DisplayMemberPath="Name"
+                              SelectedValuePath="FilterId"
+                              SelectedValue="{Binding CurrentEntertainment.FilterId}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Описание -->
+            <Border Grid.Row="4" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Описание:" Foreground="#FFA4B17B" Margin="0,0,0,5" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbDescription" Height="100" TextWrapping="Wrap" AcceptsReturn="True"
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.Description}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Цена -->
+            <Border Grid.Row="5"
+Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Цена:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbPrice" Width="100" 
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.Price}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Длительность -->
+            <Border Grid.Row="6" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Длительность (мин):" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbDuration" Width="100" 
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.Duration}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Минимальный возраст -->
+            <Border Grid.Row="7" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Мин. возраст:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbMinAge" Width="100" 
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.MinAge}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Макс. участников -->
+            <Border Grid.Row="8" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Макс. кол-во участников:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbMaxParticipants" Width="100" 
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.MaxParticipants}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- URL изображения -->
+            <Border Grid.Row="9" Background="#FF39393B" CornerRadius="8" Padding="10" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="URL изображения:" Width="150" Foreground="#FFA4B17B" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBox x:Name="tbImageUrl" Width="300" 
+                             Style="{StaticResource RoundedTextBox}"
+                             Text="{Binding CurrentEntertainment.ImageUrl}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Кнопки сохранения/отмены -->
+            <StackPanel Grid.Row="10" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Отмена" Width="100" Click="BtnCancel_Click" Margin="0,0,10,0"
+                        Style="{StaticResource RoundedButton}"/>
+                <Button Content="Сохранить" Width="100" Click="BtnSave_Click"
+                        Style="{StaticResource SaveButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>
