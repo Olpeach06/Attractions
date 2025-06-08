@@ -5,38 +5,131 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Attractions.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="Authorization"
-      Background="#FF2D2D30">
+      Background="#20331B">
+
+    <Page.Resources>
+        <!-- Используем те же ресурсы, что и на главной странице -->
+        <Color x:Key="PrimaryColor">#A4B17B</Color>
+        <Color x:Key="AccentColor">#697E50</Color>
+        <Color x:Key="DarkColor">#20331B</Color>
+        <SolidColorBrush x:Key="LightTextColor">#DDDDDD</SolidColorBrush>
+
+        <!-- Стиль текстовых блоков -->
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="0 5 0 0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Стиль кнопок -->
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8 4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        CornerRadius="8"
+                        BorderBrush="Transparent" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопки входа -->
+        <Style x:Key="LoginButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FF5CB85C"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Стиль текстовых полей -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                BorderBrush="#697E50" BorderThickness="1">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <Border Background="#FF3E3E42" CornerRadius="10" 
+        <Border Background="#697E50" CornerRadius="10" 
                 Width="350" VerticalAlignment="Center" HorizontalAlignment="Center"
-                Padding="20" Height="299">
+                Padding="20">
             <StackPanel>
                 <TextBlock Text="Авторизация" 
-                           Foreground="White" FontSize="24" 
-                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                           Foreground="#20331B" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,20"/>
 
-                <TextBlock Text="Почта" Foreground="White"/>
-                <TextBox x:Name="tbLogin"
-                         Foreground="Black" Margin="0,0,0,10"/>
-                <TextBlock Text="Пароль" Foreground="White"/>
-                <PasswordBox x:Name="pbPassword"
-                             Foreground="Black" Margin="0,0,0,20"/>
+                <TextBlock Text="Почта" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <TextBox x:Name="tbLogin"/>
 
-                <Button Content="Войти" Click="BtnLogin_Click"
-                        Background="#FF179730" Foreground="White" 
-                        FontWeight="Bold" Height="40"
-                        Margin="0,0,0,10"/>
-                <!-- Added bottom margin -->
-                <Button Content="Зарегестрироваться" Click="BtnRegister_Click"
-                        Background="#FF0078D7" Foreground="White" 
-                        FontWeight="Bold" Height="40"/>
+                <TextBlock Text="Пароль" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <PasswordBox x:Name="pbPassword" Margin="0,0,0,20"/>
 
-                <TextBlock x:Name="tbError" Foreground="Red" 
-                           HorizontalAlignment="Center" Margin="0,10,0,0"
-                           TextWrapping="Wrap" Visibility="Collapsed"/>
+                <Button Content="Войти" 
+                        Click="BtnLogin_Click"
+                        Style="{StaticResource LoginButton}" 
+                        Height="40"
+                        Margin="0,0,0,10" Background="#FF20331B" Foreground="#FFA4B17B"/>
+                <Button Content="Зарегистрироваться" 
+                        Click="BtnRegister_Click"
+                        Background="#FFA4B17B" 
+                        Foreground="#FF20331B"
+                        FontWeight="Bold" 
+                        Height="40"/>
+
+                <TextBlock x:Name="tbError" 
+                           Foreground="Red" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,10,0,0"
+                           TextWrapping="Wrap" 
+                           Visibility="Collapsed"/>
             </StackPanel>
         </Border>
     </Grid>

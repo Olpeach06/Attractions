@@ -120,7 +120,7 @@
                                     <TextBlock Text="{Binding Entertainment.Name}" FontWeight="Bold" Foreground="#20331B"/>
                                     <TextBlock Text="{Binding Schedule.Date, StringFormat='Дата: {0:dd.MM.yyyy}'}" Foreground="#20331B"/>
                                     <TextBlock Text="{Binding Schedule.Time, StringFormat='Время: {0:hh\\:mm}'}" Foreground="#20331B"/>
-                                    <TextBlock Text="{Binding Entertainment.Price, StringFormat='Цена: {0:C}'}" FontWeight="Bold" Foreground="#20331B"/>
+                                    <TextBlock Text="{Binding Entertainment.Price, StringFormat='Цена: {0:N} ₽'}" FontWeight="Bold" Foreground="#20331B"/>
                                     <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}" Margin="0,5,0,0"/>
                                 </StackPanel>
                             </StackPanel>
@@ -144,7 +144,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,20,0">
                     <CheckBox x:Name="cbSelectAll" Content="Выбрать все" VerticalAlignment="Center" Margin="0,0,10,0"
                       Checked="CbSelectAll_Checked" Unchecked="CbSelectAll_Unchecked" Foreground="#FF20331B"/>
-                    <TextBlock Text="{Binding TotalPrice, StringFormat='Итого: {0:C}'}" FontSize="16" FontWeight="Bold" Foreground="#20331B"/>
+                    <TextBlock Text="{Binding TotalPrice, StringFormat='Итого: {0:N} ₽'}" FontSize="16" FontWeight="Bold" Foreground="#20331B"/>
                 </StackPanel>
                 <Button x:Name="btnCheckout" Content="Перейти к оформлению" Width="180" Height="35"
                 Click="BtnCheckout_Click" IsEnabled="{Binding HasSelectedItems}"/>

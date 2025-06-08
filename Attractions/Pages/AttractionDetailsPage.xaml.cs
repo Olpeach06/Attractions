@@ -82,7 +82,7 @@ namespace Attractions.Pages
             bool isFavorite = AppConnect.modelDB.Favorites
                 .Any(f => f.UserId == _currentUserId && f.EntertainmentId == _attractionId);
 
-            btnAddToFavorites.Content = isFavorite ? "В избранном" : "Добавлено в избранное";
+            btnAddToFavorites.Content = isFavorite ? "В избранном" : "Добавить в избранное";
             btnAddToFavorites.Tag = isFavorite;
         }
 

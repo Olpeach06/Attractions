@@ -7,59 +7,164 @@
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="800"
       Title="Регистрация"
-      Background="#FF2D2D30">
+      Background="#20331B">
+
+    <Page.Resources>
+        <!-- Общие ресурсы стиля -->
+        <Color x:Key="PrimaryColor">#A4B17B</Color>
+        <Color x:Key="AccentColor">#697E50</Color>
+        <Color x:Key="DarkColor">#20331B</Color>
+        <SolidColorBrush x:Key="LightTextColor">#DDDDDD</SolidColorBrush>
+
+        <!-- Стиль текстовых блоков -->
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="0 5 0 0"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Стиль кнопок -->
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8 4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                BorderBrush="Transparent" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопки регистрации -->
+        <Style x:Key="RegisterButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FF0078D7"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <!-- Стиль текстовых полей -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                BorderBrush="#697E50" BorderThickness="1">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border
+Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для DatePicker -->
+        <Style TargetType="DatePicker">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+        </Style>
+
+        <!-- Стиль для CheckBox -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="0 0 0 20"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <Border Background="#FF3E3E42" CornerRadius="10" 
+        <Border Background="#697E50" CornerRadius="10" 
                 Width="400" VerticalAlignment="Center" HorizontalAlignment="Center"
                 Padding="25">
             <StackPanel>
                 <TextBlock Text="Регистрация" 
-                           Foreground="White" FontSize="24" 
-                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                           Foreground="#FF20331B" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,20"/>
 
                 <!-- Имя -->
-                <TextBlock Text="Имя" Foreground="White" Margin="0,0,0,10"/>
-                <TextBox x:Name="tbFirstName" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Имя" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <TextBox x:Name="tbFirstName"/>
 
                 <!-- Фамилия -->
-                <TextBlock Text="Фамилия" Foreground="White" Margin="0,0,0,10"/>
-                <TextBox x:Name="tbLastName" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Фамилия" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <TextBox x:Name="tbLastName"/>
 
                 <!-- Отчество -->
-                <TextBlock Text="Отчество" Foreground="White" Margin="0,0,0,10"/>
-                <TextBox x:Name="tbMiddleName" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Отчество" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <TextBox x:Name="tbMiddleName"/>
 
                 <!-- Дата рождения -->
-                <TextBlock Text="Дата рождения" Foreground="White" Margin="0,0,0,10"/>
-                <DatePicker x:Name="dpBirthDate" SelectedDateFormat="Short"
-                            Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Дата рождения" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <DatePicker x:Name="dpBirthDate" SelectedDateFormat="Short"/>
 
                 <!-- Email -->
-                <TextBlock Text="Email" Foreground="White" Margin="0,0,0,10"/>
-                <TextBox x:Name="tbEmail" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Email" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <TextBox x:Name="tbEmail"/>
 
                 <!-- Пароль -->
-                <TextBlock Text="Пароль" Foreground="White" Margin="0,0,0,10"/>
-                <PasswordBox x:Name="pbPassword" Foreground="Black" Margin="0,0,0,10"/>
+                <TextBlock Text="Пароль" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <PasswordBox x:Name="pbPassword"/>
 
                 <!-- Подтверждение пароля -->
-                <TextBlock Text="Подтвердите пароль" Foreground="White" Margin="0,0,0,10"/>
-                <PasswordBox x:Name="pbConfirmPassword" Foreground="Black" Margin="0,0,0,20"/>
+                <TextBlock Text="Подтвердите пароль" Style="{StaticResource LabelStyle}" Foreground="#FF20331B" FontWeight="Bold"/>
+                <PasswordBox x:Name="pbConfirmPassword" Margin="0,0,0,20"/>
 
                 <!-- Показывать пароль -->
-                <CheckBox x:Name="cbShowPassword" Content="Показать пароль" 
-                          Foreground="White" Margin="0,0,0,20"
-                          Checked="CbShowPassword_Checked" Unchecked="CbShowPassword_Unchecked"/>
+                <CheckBox x:Name="cbShowPassword" Content="Показать пароль"
+                          Checked="CbShowPassword_Checked" Unchecked="CbShowPassword_Unchecked" Foreground="#FF20331B" FontWeight="Bold"/>
 
                 <!-- Кнопка 'Зарегистрироваться' -->
                 <Button Content="Зарегистрироваться" Click="BtnRegister_Click"
-                        Background="#FF0078D7" Foreground="White" 
-                        FontWeight="Bold" Height="40" Margin="0,0,0,10" FontSize="15"/>
+                        Style="{StaticResource RegisterButton}" Margin="0,0,0,10" Background="#FF20331B" Foreground="#FFA4B17B"/>
 
                 <!-- Кнопка 'Назад' -->
                 <Button Content="Назад" Click="BtnBack_Click"
-                        Foreground="#FF0078D7" BorderBrush="#FF0078D7" FontWeight="Bold" FontSize="15"/>
+                        Background="Transparent" Foreground="#FF20331B" 
+                        BorderBrush="#FF0078D7" BorderThickness="1"
+                        FontWeight="Bold" FontSize="15"/>
 
                 <!-- Сообщение об ошибке -->
                 <TextBlock x:Name="tbError" Foreground="Red" 

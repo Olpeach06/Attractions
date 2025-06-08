@@ -129,7 +129,7 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 20">
                         <TextBlock Text="Баланс: " Style="{StaticResource LabelStyle}"/>
-                        <TextBlock x:Name="txtBalance" Text="{Binding CurrentUserData.Balance, StringFormat={}{0:F2} руб.}" FontWeight="Bold" Foreground="{StaticResource LightTextColor}" FontSize="16"/>
+                        <TextBlock x:Name="txtBalance" Text="{Binding CurrentUserData.Balance, StringFormat={}{0:N} ₽}" FontWeight="Bold" Foreground="{StaticResource LightTextColor}" FontSize="16"/>
                     </StackPanel>
 
                     <TextBlock Text="Пополнить баланс" Style="{StaticResource LabelStyle}"/>

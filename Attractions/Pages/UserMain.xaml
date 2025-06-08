@@ -143,8 +143,7 @@
                                                    Foreground="{StaticResource LightTextColor}" Margin="0,5,0,0"/>
                                         <TextBlock Text="{Binding Description}" TextWrapping="Wrap" 
                                                    Foreground="#FFDDDDDD" MaxHeight="50" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Price, StringFormat='{}{0:C}'}" 
-                                                   Foreground="#20331B" FontWeight="Bold" Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding Price, StringFormat={}{0:N} ₽}" Foreground="#20331B" FontWeight="Bold" Margin="0,5,0,0"/>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                             <Button Content="Подробнее" Width="100" Margin="0,0,5,0"
                                                     Click="BtnDetails_Click" Tag="{Binding EntertainmentId}"/>
