@@ -12,18 +12,21 @@ namespace Attractions
     using System;
     using System.Collections.Generic;
     
-    public partial class Payments
+    public partial class Statuses
     {
-        public int PaymentId { get; set; }
-        public int UserId { get; set; }
-        public int OrderId { get; set; }
-        public decimal Amount { get; set; }
-        public int PaymentMethodId { get; set; }
-        public int StatusId { get; set; }
-        public System.DateTime PaymentDate { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Statuses()
+        {
+            this.Orders = new HashSet<Orders>();
+            this.Payments = new HashSet<Payments>();
+        }
     
-        public virtual Orders Orders { get; set; }
-        public virtual Users Users { get; set; }
-        public virtual Statuses Statuses { get; set; }
+        public int StatusId { get; set; }
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orders> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payments> Payments { get; set; }
     }
 }

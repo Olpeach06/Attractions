@@ -24,7 +24,7 @@ namespace Attractions
         public int OrderId { get; set; }
         public int UserId { get; set; }
         public decimal TotalAmount { get; set; }
-        public string Status { get; set; }
+        public int StatusId { get; set; }
         public int PaymentMethodId { get; set; }
         public System.DateTime OrderDate { get; set; }
     
@@ -33,5 +33,6 @@ namespace Attractions
         public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payments> Payments { get; set; }
+        public virtual Statuses Statuses { get; set; }
     }
 }

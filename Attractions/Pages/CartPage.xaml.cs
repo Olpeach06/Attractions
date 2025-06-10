@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,23 +19,40 @@ namespace Attractions.Pages
 {
     public partial class CartPage : Page
     {
+        public decimal TotalPrice { get; set; }
+        public bool HasSelectedItems { get; set; }
+
         public CartPage()
         {
             InitializeComponent();
-            LoadCartItems();
             DataContext = this;
+
+            // Загружаем корзину, если она пуста
+            if (CurrentUser.Cart.Count == 0)
+            {
+                LoadCartFromDatabase();
+            }
+
+            // Привязываем существующую корзину
+            lvCart.ItemsSource = CurrentUser.Cart;
+            UpdateTotal();
         }
 
-        private void LoadCartItems()
+        private void LoadCartFromDatabase()
         {
-            lvCart.ItemsSource = CurrentUser.Cart.Select(c => new CartItemViewModel
-            {
-                Schedule = c.Schedule,
-                Entertainment = c.Entertainment,
-                IsSelected = true
-            }).ToList();
+            var cartItems = AppConnect.modelDB.CartItems
+                .Where(ci => ci.Cart.CartId == CurrentUser.Users.UserId)
+                .ToList();
 
-            UpdateTotal();
+            foreach (var item in cartItems)
+            {
+                CurrentUser.Cart.Add(new CartItem
+                {
+                    Schedule = item.Schedule,
+                    Entertainment = item.Schedule.Entertainment,
+                    IsSelected = true
+                });
+            }
         }
 
         private void UpdateTotal()
@@ -44,10 +62,21 @@ namespace Attractions.Pages
                 .Sum(c => c.Entertainment.Price);
 
             HasSelectedItems = CurrentUser.Cart.Any(c => c.IsSelected);
+
+            // Обновляем привязки
+            OnPropertyChanged(nameof(TotalPrice));
+            OnPropertyChanged(nameof(HasSelectedItems));
         }
 
-        public decimal TotalPrice { get; set; }
-        public bool HasSelectedItems { get; set; }
+        // Реализуйте INotifyPropertyChanged для страницы
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        // Остальные методы (BtnRemove_Click, CheckBox_CheckedChanged и т.д.) остаются без изменений
+
 
         private void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
@@ -86,7 +115,7 @@ namespace Attractions.Pages
                 if (itemToRemove != null)
                 {
                     CurrentUser.Cart.Remove(itemToRemove);
-                    LoadCartItems();
+                    LoadCartFromDatabase();
                     MessageBox.Show("Товар удален из корзины", "Успешно",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }

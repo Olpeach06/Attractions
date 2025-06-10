@@ -113,7 +113,7 @@ namespace Attractions.Pages
 
         private void BtnOrders_Click(object sender, RoutedEventArgs e)
         {
-            // NavigationService?.Navigate(new AdminOrders());
+            NavigationService?.Navigate(new AdminOrders());
         }
 
         private void BtnUsers_Click(object sender, RoutedEventArgs e)

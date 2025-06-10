@@ -2,13 +2,140 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Attractions.Pages"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="AdminOrders">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Управление заказами"
+      Background="#20331B">
 
-    <Grid>
-        
+    <Page.Resources>
+        <!-- Цветовая палитра -->
+        <Color x:Key="PrimaryColor">#A4B17B</Color>
+        <Color x:Key="AccentColor">#697E50</Color>
+        <Color x:Key="DarkColor">#20331B</Color>
+        <SolidColorBrush x:Key="LightTextColor">#DDDDDD</SolidColorBrush>
+
+        <!-- Общий стиль кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                BorderBrush="Transparent" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для DataGrid -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="#A4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Стиль для ComboBox -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="BorderBrush" Value="#697E50"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Навигационная панель -->
+            <RowDefinition Height="*"/>
+            <!-- Основное содержимое -->
+        </Grid.RowDefinitions>
+
+        <!-- Навигационная панель -->
+        <Border Grid.Row="0" Background="#697E50" Padding="10" CornerRadius="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="🎡 Развлечения" Click="BtnAttractions_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+                <Button Content="📅 Сеансы" Click="BtnSessions_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+                <Button Content="🗃️ Заказы" Click="BtnOrders_Click" IsEnabled="False" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+                <Button Content="👥 Пользователи" Click="BtnUsers_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+                <Button Content="Выйти" Click="BtnLogout_Click" Background="#FF20331B" Foreground="#FFDDDDDD"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Панель инструментов -->
+                <RowDefinition Height="*"/>
+                <!-- Список заказов -->
+            </Grid.RowDefinitions>
+
+            <!-- Панель инструментов -->
+            <!-- Панель инструментов -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="Фильтр по статусу:" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White"/>
+                    <ComboBox x:Name="cbStatusFilter" Width="150" Height="25" SelectionChanged="CbStatusFilter_SelectionChanged"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="От:" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White"/>
+                    <DatePicker x:Name="dpFromDate" Width="120" Height="35"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                    <TextBlock Text="До:" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="White"/>
+                    <DatePicker x:Name="dpToDate" Width="120" Height="35"/>
+                </StackPanel>
+
+                <Button Content="Применить" Click="ApplyFilters_Click" Width="80"/>
+                <Button Content="Сбросить" Click="ResetFilters_Click" Width="80"/>
+
+                <!--<Button Content="🗑 Удалить" Click="BtnDelete_Click" 
+            IsEnabled="{Binding ElementName=dgOrders, Path=SelectedItems.Count}"
+            Background="#FFA5205C" Foreground="White"/>
+                <Button Content="↩" Click="BtnRefresh_Click" 
+            ToolTip="Обновить" FontSize="20" Foreground="#20331B"
+            Width="35" Height="35" Background="#FFA4B17B"/>-->
+            </StackPanel>
+
+            <!-- Список заказов -->
+            <DataGrid x:Name="dgOrders" Grid.Row="1" SelectionMode="Extended" CanUserSortColumns="True" AutoGenerateColumns="False"
+                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding OrderId}" Width="50"/>
+                    <DataGridTextColumn Header="Пользователь" Binding="{Binding Users.FirstName}" Width="Auto"/>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding OrderDate, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="Auto"/>
+                    <DataGridTextColumn Header="Сумма" Binding="{Binding TotalAmount, StringFormat={}{0:N} ₽}" Width="*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Statuses.Name}" Width="*"/>
+
+                    <!-- Колонка для изменения статуса -->
+                    <DataGridTemplateColumn Header="Изменить статус" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox x:Name="cbStatus" IsReadOnly="False" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=DataGrid}, Path=Tag.Statuses}"
+                                              SelectedValuePath="Id" DisplayMemberPath="Name" Width="150" Margin="0,0,5,0"/>
+                                    <Button Content="Обновить" Click="BtnUpdateStatus_Click" Tag="{Binding OrderId}" Width="80"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Page>
