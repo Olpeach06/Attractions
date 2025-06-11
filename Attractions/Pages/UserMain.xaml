@@ -39,7 +39,7 @@
 
         <!-- Стиль для кнопки выхода -->
         <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="#FFCD6464"/>
+            <Setter Property="Background" Value="#FF960226"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
@@ -84,6 +84,7 @@
                 <Button Content="🏠 Главная" Click="BtnMain_Click" Width="120" Height="30"  IsEnabled="False"/>
                 <Button Content="🛒 Корзина" Click="BtnCart_Click" Width="120"/>
                 <Button Content="★ Избранное" Click="BtnFavorites_Click" Width="120"/>
+                <Button Content="🗃 Мои заказы" Click="BtnUserOrders_Click" Width="120"/>
                 <Button Content="👤 Аккаунт" Click="BtnAccount_Click" Width="120"/>
                 <Button Content="Выйти" Click="BtnLogout_Click" Width="120" Style="{StaticResource DangerButton}"/>
             </StackPanel>

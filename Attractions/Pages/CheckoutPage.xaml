@@ -2,13 +2,85 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Attractions.Pages"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="CheckoutPage">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Оформление заказа"
+      Background="#20331B">
 
-    <Grid>
-        
+    <Page.Resources>
+        <Color x:Key="PrimaryColor">#A4B17B</Color>
+        <Color x:Key="AccentColor">#697E50</Color>
+        <Color x:Key="DarkColor">#20331B</Color>
+        <SolidColorBrush x:Key="LightTextColor">#DDDDDD</SolidColorBrush>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource LightTextColor}"/>
+            <Setter Property="Margin" Value="0 5 0 0"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FFA4B17B"/>
+            <Setter Property="Foreground" Value="#20331B"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8 4"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Навигационная панель -->
+        <Border Grid.Row="0" Background="#697E50" Padding="10" CornerRadius="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="🏠 Главная" Click="BtnMain_Click" Width="120"/>
+                <Button Content="🛒 Корзина" Click="BtnCart_Click" Width="120"/>
+                <Button Content="★ Избранное" Click="BtnFavorites_Click" Width="120"/>
+                <Button Content="👤 Аккаунт" Click="BtnAccount_Click" Width="120"/>
+                <Button Content="Выйти" Click="BtnLogout_Click" Width="120" Background="#FFCD6464"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Информация о заказе -->
+            <Border Grid.Column="0" Background="#697E50" Padding="15" CornerRadius="10" Margin="0,0,5,0">
+                <StackPanel>
+                    <TextBlock Text="Ваш заказ" FontSize="18" FontWeight="Bold"/>
+                    <ListView x:Name="lvOrderItems" Height="300">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,5">
+                                    <TextBlock Text="{Binding Schedule.Entertainment.Name}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Schedule.StartTime, StringFormat='Дата: {0:dd.MM.yyyy HH:mm}'}"/>
+                                    <TextBlock Text="{Binding Quantity, StringFormat='Количество: {0}'}"/>
+                                    <TextBlock Text="{Binding Schedule.Entertainment.Price, StringFormat='Цена: {0:N} ₽'}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock x:Name="txtTotal" FontSize="16" FontWeight="Bold" 
+                               HorizontalAlignment="Right" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Форма оформления -->
+            <Border Grid.Column="1" Background="#697E50" Padding="15" CornerRadius="10" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Оформление заказа" FontSize="18" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtBalance" Text="Баланс: 0 ₽" FontWeight="Bold" Margin="0,10,0,20"/>
+                    <Button Content="Подтвердить заказ" Click="BtnConfirm_Click" 
+                FontWeight="Bold" HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

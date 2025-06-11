@@ -14,185 +14,98 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Attractions.AppData;
+using System.Collections.ObjectModel;
 
 namespace Attractions.Pages
 {
     public partial class CartPage : Page
     {
-        public decimal TotalPrice { get; set; }
-        public bool HasSelectedItems { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public CartPage()
         {
             InitializeComponent();
+            LoadCartItems();
             DataContext = this;
-
-            // Загружаем корзину, если она пуста
-            if (CurrentUser.Cart.Count == 0)
-            {
-                LoadCartFromDatabase();
-            }
-
-            // Привязываем существующую корзину
-            lvCart.ItemsSource = CurrentUser.Cart;
-            UpdateTotal();
         }
 
-        private void LoadCartFromDatabase()
+        private void LoadCartItems()
         {
-            var cartItems = AppConnect.modelDB.CartItems
-                .Where(ci => ci.Cart.CartId == CurrentUser.Users.UserId)
-                .ToList();
-
-            foreach (var item in cartItems)
+            try
             {
-                CurrentUser.Cart.Add(new CartItem
+                if (CurrentUser.Users == null) return;
+
+                var cart = AppConnect.modelDB.Cart
+                    .Include("CartItems.Schedule.Entertainment")
+                    .FirstOrDefault(c => c.UserId == CurrentUser.Users.UserId);
+
+                if (cart != null)
                 {
-                    Schedule = item.Schedule,
-                    Entertainment = item.Schedule.Entertainment,
-                    IsSelected = true
-                });
-            }
-        }
-
-        private void UpdateTotal()
-        {
-            TotalPrice = CurrentUser.Cart
-                .Where(c => c.IsSelected)
-                .Sum(c => c.Entertainment.Price);
-
-            HasSelectedItems = CurrentUser.Cart.Any(c => c.IsSelected);
-
-            // Обновляем привязки
-            OnPropertyChanged(nameof(TotalPrice));
-            OnPropertyChanged(nameof(HasSelectedItems));
-        }
-
-        // Реализуйте INotifyPropertyChanged для страницы
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        // Остальные методы (BtnRemove_Click, CheckBox_CheckedChanged и т.д.) остаются без изменений
-
-
-        private void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            UpdateTotal();
-        }
-
-        private void CbSelectAll_Checked(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in lvCart.Items)
-            {
-                if (item is CartItemViewModel vm)
-                {
-                    vm.IsSelected = true;
+                    lvCartItems.ItemsSource = cart.CartItems.ToList();
+                    TotalAmount = cart.CartItems.Sum(ci => ci.Quantity * ci.Schedule.Entertainment.Price);
                 }
             }
-            UpdateTotal();
-        }
-
-        private void CbSelectAll_Unchecked(object sender, RoutedEventArgs e)
-        {
-            foreach (var item in lvCart.Items)
+            catch (Exception ex)
             {
-                if (item is CartItemViewModel vm)
-                {
-                    vm.IsSelected = false;
-                }
+                MessageBox.Show($"Ошибка при загрузке корзины: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            UpdateTotal();
         }
 
         private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is int scheduleId)
+            if (sender is Button button && button.Tag is int cartItemId)
             {
-                var itemToRemove = CurrentUser.Cart.FirstOrDefault(c => c.Schedule.ScheduleId == scheduleId);
-                if (itemToRemove != null)
+                try
                 {
-                    CurrentUser.Cart.Remove(itemToRemove);
-                    LoadCartFromDatabase();
-                    MessageBox.Show("Товар удален из корзины", "Успешно",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    var item = AppConnect.modelDB.CartItems.Find(cartItemId);
+                    if (item != null)
+                    {
+                        AppConnect.modelDB.CartItems.Remove(item);
+                        AppConnect.modelDB.SaveChanges();
+                        LoadCartItems();
+                    }
                 }
-            }
-        }
-
-        private void BtnAddToFavorites_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int entertainmentId)
-            {
-                var attraction = AppConnect.modelDB.Entertainment.FirstOrDefault(a => a.EntertainmentId == entertainmentId);
-
-                if (attraction == null) return;
-
-                if (CurrentUser.Favorites.Any(f => f.EntertainmentId == entertainmentId))
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Этот аттракцион уже в вашем избранном",
-                        "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    CurrentUser.Favorites.Add(attraction);
-                    MessageBox.Show("Аттракцион добавлен в избранное", "Успешно",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
         private void BtnCheckout_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItems = CurrentUser.Cart
-                .Where(c => c.IsSelected)
-                .ToList();
-
-            if (!selectedItems.Any())
+            if (CurrentUser.Users == null)
             {
-                MessageBox.Show("Выберите хотя бы один товар для оформления",
-                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Для оформления заказа необходимо авторизоваться", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            NavigationService.Navigate(new CheckoutPage(selectedItems));
-        }
-        private void BtnMain_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new UserMain());
+            if (lvCartItems.Items.Count == 0)
+            {
+                MessageBox.Show("Корзина пуста", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            NavigationService.Navigate(new CheckoutPage());
         }
 
-        private void BtnCart_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new CartPage());
-        }
-
-        private void BtnFavorites_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new FavoritesPage());
-        }
-
-        private void BtnAccount_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new AccountPage());
-        }
-
+        private void BtnMain_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new UserMain());
+        private void BtnCart_Click(object sender, RoutedEventArgs e) { /* Уже на этой странице */ }
+        private void BtnFavorites_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FavoritesPage());
+        private void BtnAccount_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AccountPage());
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
+            CurrentUser.Users = null;
             NavigationService.Navigate(new Authorization());
         }
-    }
 
-    public class CartItemViewModel
-    {
-        public Schedule Schedule { get; set; }
-        public Entertainment Entertainment { get; set; }
-        public bool IsSelected { get; set; }
+        private void BtnUserOrders_Click(object sender, RoutedEventArgs e)
+        {
 
-        // Добавляем вычисляемые свойства для Status и StatusColor
-        public string Status => Schedule.IsBooked ? "Забронирован" : "Доступен";
-        public string StatusColor => Schedule.IsBooked ? "#FFFF0000" : "#FF00FF00";
+        }
     }
 }

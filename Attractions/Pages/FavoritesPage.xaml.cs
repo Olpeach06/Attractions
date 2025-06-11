@@ -102,5 +102,10 @@ namespace Attractions.Pages
         {
             NavigationService?.Navigate(new Authorization());
         }
+
+        private void BtnUserOrders_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new UserOrders());
+        }
     }
 }

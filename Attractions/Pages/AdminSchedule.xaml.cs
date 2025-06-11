@@ -87,12 +87,12 @@ namespace Attractions.Pages
 
         private void BtnOrders_Click(object sender, RoutedEventArgs e)
         {
-            // NavigationService?.Navigate(new AdminOrders());
+            NavigationService.Navigate(new AdminOrders());
         }
 
         private void BtnUsers_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new AdminUsers());
+            NavigationService.Navigate(new AdminUsers());
         }
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)

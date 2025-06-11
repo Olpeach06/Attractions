@@ -164,5 +164,10 @@ namespace Attractions.Pages
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void BtnUserOrders_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new UserOrders());
+        }
     }
 }

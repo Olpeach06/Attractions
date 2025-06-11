@@ -105,6 +105,7 @@
                         IsEnabled="{Binding ElementName=lvEntertainment, Path=SelectedItems.Count}" Background="#FFA4B17B" Foreground="#FF20331B"/>
                 <Button Content="🗑 Удалить" Click="BtnDelete_Click" 
                         IsEnabled="{Binding ElementName=lvEntertainment, Path=SelectedItems.Count}" Background="#FFA5205C" Foreground="White"/>
+                <Button Content="📤 Экспорт" Click="BtnExport_Click"  Background="#FFA4B17B" Foreground="#FF20331B"/>
                 <Button Content="↩" Click="BtnRefresh_Click" Style="{StaticResource RoundButtonStyle}" ToolTip="Обновить" FontSize="30" Foreground="#FF20331B"/>
             </StackPanel>
 

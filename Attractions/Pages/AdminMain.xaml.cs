@@ -15,15 +15,18 @@ using System.Windows.Shapes;
 using System.Data.Entity;
 using Attractions.AppData;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Attractions.Pages
 {
     public partial class AdminMain : Page
     {
-        public ObservableCollection<Entertainment> EntertainmentList { get; set; }
+        public ObservableCollection<Entertainment> EntertainmentList { get; set; } = new ObservableCollection<Entertainment>();
         public AdminMain()
         {
             InitializeComponent();
+            lvEntertainment.ItemsSource = EntertainmentList;
             LoadEntertainment();
         }
 
@@ -31,10 +34,14 @@ namespace Attractions.Pages
         {
             try
             {
-                lvEntertainment.ItemsSource = AppConnect.modelDB.Entertainment
+                var list = AppConnect.modelDB.Entertainment
                     .Include(e => e.Categories)
                     .Include(e => e.Filters)
                     .ToList();
+
+                EntertainmentList.Clear();
+                foreach (var item in list)
+                    EntertainmentList.Add(item);
             }
             catch (Exception ex)
             {
@@ -130,6 +137,53 @@ namespace Attractions.Pages
         private void BtnSessions_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new AdminSchedule());
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            if (EntertainmentList == null || EntertainmentList.Count == 0)
+            {
+                MessageBox.Show("Нет данных для экспорта", "Экспорт", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            ExportToCsv(EntertainmentList.ToList());
+        }
+
+        private void ExportToCsv(List<Entertainment> items)
+        {
+            try
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    Filter = "CSV файлы (*.csv)|*.csv",
+                    FileName = "Развлечения.csv"
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    var sb = new StringBuilder();
+
+                    // Заголовки столбцов, разделённые точкой с запятой
+                    sb.AppendLine("ID;Название;Описание;Категория;Фильтр;Цена;Длительность;Мин. возраст;Макс. участников");
+
+                    foreach (var item in items)
+                    {
+                        string categoryName = item.Categories != null ? item.Categories.Name : "";
+                        string filterName = item.Filters != null ? item.Filters.Name : "";
+
+                        sb.AppendLine($"{item.EntertainmentId};{item.Name};{item.Description};{categoryName};{filterName};{item.Price};{item.Duration};{item.MinAge};{item.MaxParticipants}");
+                    }
+
+                    System.IO.File.WriteAllText(saveDialog.FileName, sb.ToString(), Encoding.UTF8);
+
+                    MessageBox.Show("Файл успешно сохранён!", "Экспорт", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при экспорте: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

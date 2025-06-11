@@ -65,8 +65,9 @@
                 <Button Content="🏠 Главная" Click="BtnMain_Click" Width="120" Height="30"/>
                 <Button Content="🛒 Корзина" Click="BtnCart_Click" Width="120"/>
                 <Button Content="★ Избранное" Click="BtnFavorites_Click" Width="120" Background="#FFA4B17B" Foreground="#FF20331B"/>
+                <Button Content="🗃 Мои заказы" Click="BtnUserOrders_Click" Width="120"/>
                 <Button Content="👤 Аккаунт" Click="BtnAccount_Click" Width="120"/>
-                <Button Content="Выйти" Click="BtnLogout_Click" Width="120" Background="#FFA5205C" Foreground="White"/>
+                <Button Content="Выйти" Click="BtnLogout_Click" Width="120" Background="#FF960226" Foreground="White"/>
             </StackPanel>
         </Border>
 
