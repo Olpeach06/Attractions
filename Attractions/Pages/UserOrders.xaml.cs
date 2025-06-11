@@ -61,6 +61,7 @@ namespace Attractions.Pages
         }
 
 
+
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Authorization());
