@@ -84,6 +84,7 @@
                            Foreground="#A4B17B"
                            Margin="0 0 0 15"/>
 
+                <!-- Твой существующий код -->
                 <ItemsControl x:Name="OrdersItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -91,18 +92,21 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
+                                        <!-- Основная информация -->
                                         <ColumnDefinition Width="130"/>
+                                        <!-- Новую кнопку размещаем справа -->
                                     </Grid.ColumnDefinitions>
 
+                                    <!-- Информация слева -->
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="{Binding OrderDate, StringFormat='Заказ от {0:dd.MM.yyyy HH:mm}'}" 
-                                                   FontWeight="Bold" 
-                                                   Foreground="{StaticResource LightTextColor}"
-                                                   FontSize="16"/>
+                                   FontWeight="Bold" 
+                                   Foreground="{StaticResource LightTextColor}"
+                                   FontSize="16"/>
 
-                                        <TextBlock Text="{Binding Statuses.Name, StringFormat='Статус: {0}'}" 
-                                                   Style="{StaticResource OrderItemTextStyle}" 
-                                                   Margin="0 3 0 8"/>
+                                        <TextBlock Text="{Binding Status, StringFormat='Статус: {0}'}" 
+                                   Style="{StaticResource OrderItemTextStyle}" 
+                                   Margin="0 3 0 8"/>
 
                                         <ItemsControl ItemsSource="{Binding OrderItems}">
                                             <ItemsControl.ItemTemplate>
@@ -115,30 +119,47 @@
                                                             <ColumnDefinition Width="80"/>
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Text="{Binding EntertainmentName}" 
-                                                                   Style="{StaticResource OrderItemTextStyle}"
-                                                                   Grid.Column="0"/>
+                                                   Style="{StaticResource OrderItemTextStyle}"
+                                                   Grid.Column="0"/>
                                                         <TextBlock Text="{Binding ScheduleTime}" 
-                                                                   Style="{StaticResource OrderItemTextStyle}" 
-                                                                   Grid.Column="1"/>
+                                                   Style="{StaticResource OrderItemTextStyle}" 
+                                                   Grid.Column="1"/>
                                                         <TextBlock Text="{Binding Quantity}" 
-                                                                   Style="{StaticResource OrderItemTextStyle}" 
-                                                                   Grid.Column="2" HorizontalAlignment="Center"/>
+                                                   Style="{StaticResource OrderItemTextStyle}" 
+                                                   Grid.Column="2" HorizontalAlignment="Center"/>
                                                         <TextBlock Text="{Binding Price, StringFormat='Цена:{0} ₽'}" 
-                                                                   Style="{StaticResource OrderItemTextStyle}" 
-                                                                   Grid.Column="3" HorizontalAlignment="Right"/>
+                                                   Style="{StaticResource OrderItemTextStyle}" 
+                                                   Grid.Column="3" HorizontalAlignment="Right"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
                                         <TextBlock Text="{Binding TotalAmount, StringFormat='Общая сумма: {0}₽'}" 
-                                                   FontWeight="Bold" 
-                                                   Foreground="{StaticResource LightTextColor}" 
-                                                   FontSize="15"
-                                                   Margin="0 10 0 0"/>
+                                   FontWeight="Bold" 
+                                   Foreground="{StaticResource LightTextColor}" 
+                                   FontSize="15"
+                                   Margin="0 10 0 0"/>
                                     </StackPanel>
 
+                                    <!-- Кнопка справа -->
+                                    <Button Grid.Column="1" 
+                            Content="Оставить отзыв" 
+                            CommandParameter="{Binding OrderId}" 
+                            Click="LeaveReviewClick" >
 
+                                        <!-- Управляем видимостью кнопки через триггер -->
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StatusId}" Value="3">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </Grid>
                             </Border>
                         </DataTemplate>

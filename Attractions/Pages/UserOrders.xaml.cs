@@ -40,7 +40,7 @@ namespace Attractions.Pages
                 o.OrderId,
                 o.OrderDate,
                 o.TotalAmount,
-                o.Statuses,
+                Status = o.Statuses.Name, // Изменено здесь - берем название статуса
                 OrderItems = o.OrderItems.Select(oi => new
                 {
                     EntertainmentName = oi.Schedule.Entertainment.Name,
@@ -89,6 +89,23 @@ namespace Attractions.Pages
         private void BtnUserOrders_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+        private void LeaveReviewClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int orderId)
+            {
+                // Получаем первый аттракцион из заказа
+                var order = AppConnect.modelDB.Orders.FirstOrDefault(o => o.OrderId == orderId);
+                if (order != null && order.OrderItems.Any())
+                {
+                    int entertainmentId = order.OrderItems.First().Schedule.EntertainmentId;
+                    NavigationService.Navigate(new AddReview(entertainmentId));
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось найти информацию о заказе", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }
