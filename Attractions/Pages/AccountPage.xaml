@@ -137,6 +137,9 @@
                     <TextBox x:Name="txtAmount" Text="0" PreviewTextInput="TxtAmount_PreviewTextInput"/>
 
                     <Button Content="Пополнить" Click="BtnTopUp_Click" HorizontalAlignment="Right" Width="100" Height="30" Background="#FF20331B" Foreground="#FFA4B17B"/>
+                    <Image x:Name="imgQr" Height="100" Width="100" Margin="0,0,250,0"/>
+                    <Button x:Name="Button_Qr_Click" Content="QR-код" Height="25" Width="100" Margin="0,20,250,0" Click="ButtonQr"/>
+
                 </StackPanel>
             </Border>
         </Grid>

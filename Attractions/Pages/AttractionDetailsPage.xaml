@@ -82,7 +82,7 @@
                 <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold" Margin="0,20,0,5"/>
                 <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,0,0,10"/>
 
-                <TextBlock Text="{Binding Price, StringFormat='Цена: {0:C}'}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Price, StringFormat='Цена: {0:N} ₽  '}" FontWeight="Bold"/>
                 <TextBlock Text="{Binding Duration, StringFormat='Длительность: {0} мин.'}"/>
                 <TextBlock Text="{Binding MinAge, StringFormat='Возраст: {0}+'}"/>
                 <TextBlock Text="{Binding MaxParticipants, StringFormat='Макс. кол-во участников: {0}'}" Margin="0,0,0,10"/>

@@ -15,6 +15,10 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using Attractions.AppData;
 using System.ComponentModel;
+using System.Drawing;
+using ZXing;
+using System.IO;
+using System.Net.NetworkInformation;
 
 namespace Attractions.Pages
 {
@@ -168,6 +172,33 @@ namespace Attractions.Pages
         private void BtnUserOrders_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new UserOrders());
+        }
+
+
+        private void ButtonQr(object sender, RoutedEventArgs e)
+        {
+            var writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new ZXing.Common.EncodingOptions
+                {
+                    Width = 300,
+                    Height = 300
+                }
+            };
+            var result = writer.Write(@"https://online.sberbank.ru/CSAFront/index.do");
+            var bitmap = new BitmapImage();
+            using (var memoryStream = new MemoryStream())
+            {
+                result.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                memoryStream.Position = 0;
+                bitmap.BeginInit();
+                bitmap.StreamSource = memoryStream;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
+            }
+            imgQr.Source = bitmap;
         }
     }
 }
